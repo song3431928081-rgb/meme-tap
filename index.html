@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>魔性拍拍 — 你是什么手速？</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="game-canvas"></canvas>
+
+  <!-- 开始界面 -->
+  <div id="start-screen" class="screen">
+    <img src="assets/banner.jpg" class="banner" alt="banner">
+    <h1 class="game-title">魔性拍拍<span class="title-sub">TAP TAP TAP</span></h1>
+    <p class="tagline">跟着节奏拍！别拍到炸弹！</p>
+    <div class="how-to">
+      <div class="how-row"><span class="emoji">🐱</span>拍猫 +1分</div>
+      <div class="how-row"><span class="emoji">⭐</span>拍星星 +5分</div>
+      <div class="how-row"><span class="emoji">💣</span>别拍炸弹！-1命</div>
+      <div class="how-row"><span class="emoji">🎵</span>踩准节拍 PERFECT 双倍分</div>
+    </div>
+    <button id="start-btn" class="big-btn">开始挑战</button>
+    <p class="best-score">最高纪录：<span id="best-display">0</span></p>
+  </div>
+
+  <!-- 游戏HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-left">
+      <div class="score-label">分数</div>
+      <div class="score-val" id="score-val">0</div>
+    </div>
+    <div class="hud-center">
+      <div class="combo-display" id="combo-display"></div>
+    </div>
+    <div class="hud-right">
+      <div class="lives-label">生命</div>
+      <div class="lives" id="lives">❤❤❤</div>
+    </div>
+  </div>
+
+  <!-- 节拍指示器 -->
+  <div id="beat-bar" class="hidden">
+    <div id="beat-pulse"></div>
+  </div>
+
+  <!-- 游戏结束 -->
+  <div id="over-screen" class="screen hidden">
+    <div class="over-content">
+      <div class="over-emoji" id="over-emoji">😵</div>
+      <h2 class="over-title">游戏结束！</h2>
+      <div class="final-score-box">
+        <div class="final-score-label">你的分数</div>
+        <div class="final-score" id="final-score">0</div>
+      </div>
+      <div class="rank-title" id="rank-title">手残党</div>
+      <div class="rank-desc" id="rank-desc">再练练吧</div>
+      <div class="over-stats">
+        <div class="stat"><span>最高连击</span><span id="over-combo">0</span></div>
+        <div class="stat"><span>PERFECT</span><span id="over-perfect">0</span></div>
+      </div>
+      <div class="over-btns">
+        <button id="retry-btn" class="big-btn">再来一次</button>
+        <button id="share-btn" class="share-btn">分享成绩</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分享浮层 -->
+  <div id="share-overlay" class="screen hidden">
+    <div class="share-card" id="share-card">
+      <canvas id="share-canvas" width="600" height="800"></canvas>
+    </div>
+    <p class="share-tip">长按图片保存 → 发朋友圈炫耀</p>
+    <button id="share-close-btn" class="big-btn">关闭</button>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
