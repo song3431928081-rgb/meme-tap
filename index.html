@@ -1,79 +1,95 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>魔性拍拍 — 你是什么手速？</title>
+<title>BEAT TAP — How Fast Are You?</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app">
   <canvas id="game-canvas"></canvas>
 
-  <!-- 开始界面 -->
+  <!-- Start Screen -->
   <div id="start-screen" class="screen">
-    <img src="assets/banner.jpg" class="banner" alt="banner">
-    <h1 class="game-title">魔性拍拍<span class="title-sub">TAP TAP TAP</span></h1>
-    <p class="tagline">跟着节奏拍！别拍到炸弹！</p>
+    <img src="assets/banner2.jpg" class="banner" alt="banner">
+    <h1 class="game-title">BEAT<span class="title-accent">TAP</span></h1>
+    <p class="tagline">Tap the dancers! Dodge the bombs! Feel the beat!</p>
     <div class="how-to">
-      <div class="how-row"><span class="emoji">🐱</span>拍猫 +1分</div>
-      <div class="how-row"><span class="emoji">⭐</span>拍星星 +5分</div>
-      <div class="how-row"><span class="emoji">💣</span>别拍炸弹！-1命</div>
-      <div class="how-row"><span class="emoji">🎵</span>踩准节拍 PERFECT 双倍分</div>
+      <div class="how-row"><span class="emoji">🕺</span>Tap dancers +1 pt</div>
+      <div class="how-row"><span class="emoji">⭐</span>Tap star +5 pts</div>
+      <div class="how-row"><span class="emoji">💣</span>Don't tap bombs! -1 life</div>
+      <div class="how-row"><span class="emoji">🎵</span>Hit on beat = PERFECT x2</div>
     </div>
-    <button id="start-btn" class="big-btn">开始挑战</button>
-    <p class="best-score">最高纪录：<span id="best-display">0</span></p>
+    <button id="start-btn" class="big-btn">START</button>
+    <div class="start-bottom">
+      <button id="leaderboard-btn-start" class="lb-btn">🏆 Leaderboard</button>
+      <p class="best-score">Best: <span id="best-display">0</span></p>
+    </div>
   </div>
 
-  <!-- 游戏HUD -->
+  <!-- HUD -->
   <div id="hud" class="hidden">
     <div class="hud-left">
-      <div class="score-label">分数</div>
+      <div class="hud-label">SCORE</div>
       <div class="score-val" id="score-val">0</div>
     </div>
     <div class="hud-center">
       <div class="combo-display" id="combo-display"></div>
     </div>
     <div class="hud-right">
-      <div class="lives-label">生命</div>
+      <div class="hud-label">LIVES</div>
       <div class="lives" id="lives">❤❤❤</div>
     </div>
+    <button id="leaderboard-btn-game" class="lb-btn-floating hidden">🏆</button>
   </div>
 
-  <!-- 节拍指示器 -->
+  <!-- Beat indicator -->
   <div id="beat-bar" class="hidden">
     <div id="beat-pulse"></div>
   </div>
 
-  <!-- 游戏结束 -->
+  <!-- Game Over -->
   <div id="over-screen" class="screen hidden">
     <div class="over-content">
       <div class="over-emoji" id="over-emoji">😵</div>
-      <h2 class="over-title">游戏结束！</h2>
+      <h2 class="over-title">GAME OVER</h2>
       <div class="final-score-box">
-        <div class="final-score-label">你的分数</div>
+        <div class="final-score-label">YOUR SCORE</div>
         <div class="final-score" id="final-score">0</div>
       </div>
-      <div class="rank-title" id="rank-title">手残党</div>
-      <div class="rank-desc" id="rank-desc">再练练吧</div>
+      <div class="rank-title" id="rank-title">NOOB</div>
+      <div class="rank-desc" id="rank-desc">Touch grass and try again</div>
       <div class="over-stats">
-        <div class="stat"><span>最高连击</span><span id="over-combo">0</span></div>
-        <div class="stat"><span>PERFECT</span><span id="over-perfect">0</span></div>
+        <div class="stat"><span>MAX COMBO</span><span id="over-combo">0</span></div>
+        <div class="stat"><span>PERFECTS</span><span id="over-perfect">0</span></div>
+        <div class="stat"><span>RANK</span><span id="over-rank">#-</span></div>
       </div>
       <div class="over-btns">
-        <button id="retry-btn" class="big-btn">再来一次</button>
-        <button id="share-btn" class="share-btn">分享成绩</button>
+        <button id="retry-btn" class="big-btn">RETRY</button>
+        <button id="share-btn" class="share-btn">SHARE</button>
       </div>
+      <button id="leaderboard-btn-over" class="lb-btn-full">🏆 VIEW LEADERBOARD</button>
     </div>
   </div>
 
-  <!-- 分享浮层 -->
+  <!-- Leaderboard -->
+  <div id="lb-screen" class="screen hidden">
+    <div class="lb-content">
+      <h2 class="lb-title">🏆 LEADERBOARD</h2>
+      <div class="lb-subtitle">Top Tappers Worldwide</div>
+      <div id="lb-list" class="lb-list"></div>
+      <button id="lb-close-btn" class="big-btn">CLOSE</button>
+    </div>
+  </div>
+
+  <!-- Share Overlay -->
   <div id="share-overlay" class="screen hidden">
     <div class="share-card" id="share-card">
       <canvas id="share-canvas" width="600" height="800"></canvas>
     </div>
-    <p class="share-tip">长按图片保存 → 发朋友圈炫耀</p>
-    <button id="share-close-btn" class="big-btn">关闭</button>
+    <p class="share-tip">Long press to save → flex on your friends</p>
+    <button id="share-close-btn" class="big-btn">CLOSE</button>
   </div>
 </div>
 <script src="game.js"></script>
