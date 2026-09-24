@@ -250,7 +250,7 @@ function spawnEntity() {
     born: gameTime, maxLife: def.life,
     scale: 0, dead: false,
     danceOffset: Math.random() * Math.PI * 2, // unique dance phase
-    danceSpeed: 6 + Math.random() * 4,
+    danceSpeed: 8 + Math.random() * 6,
   });
 }
 
@@ -375,16 +375,6 @@ function render(dt) {
   ctx.fillStyle = '#0d0015';
   ctx.fillRect(-50, -50, W+100, H+100);
 
-  // Grid
-  ctx.strokeStyle = 'rgba(106,42,255,0.1)';
-  ctx.lineWidth = 1;
-  for (let c = 0; c <= gridCols; c++) {
-    ctx.beginPath(); ctx.moveTo(c * cellW, 70); ctx.lineTo(c * cellW, H); ctx.stroke();
-  }
-  for (let r = 0; r <= gridRows; r++) {
-    ctx.beginPath(); ctx.moveTo(0, 70 + r * cellH); ctx.lineTo(W, 70 + r * cellH); ctx.stroke();
-  }
-
   // Beat glow
   const bp = getBeatProgress();
   const beatGlow = Math.max(0, 1 - bp * 2) * 0.15;
@@ -409,14 +399,26 @@ function render(dt) {
 
     // ===== DANCE ANIMATION =====
     const dancePhase = gameTime * e.danceSpeed + e.danceOffset;
-    const bounceY = Math.abs(Math.sin(dancePhase)) * 8; // hop up and down
-    const tilt = Math.sin(dancePhase * 0.7) * 0.15;     // body tilt
-    const stretch = 1 + Math.sin(dancePhase * 2) * 0.06; // squash & stretch
     const isBomb = e.type === 'bomb2';
+    const isStar = e.type === 'star2';
+    const dSpeed = isBomb ? 0.3 : 1; // bombs don't dance
+
+    // Big hop bounce
+    const bounceY = isBomb ? 0 : Math.abs(Math.sin(dancePhase)) * 18;
+    // Wild body tilt
+    const tilt = isBomb ? 0 : Math.sin(dancePhase * 0.7) * 0.3;
+    // Strong squash & stretch
+    const stretch = 1 + Math.sin(dancePhase * 2) * 0.15;
+    // Horizontal wiggle
+    const wiggleX = isBomb ? 0 : Math.sin(dancePhase * 1.3) * 6;
+    // Spin for star
+    const spin = isStar ? gameTime * 3 : 0;
+    // Quick shake on beat hit
+    const beatShake = isBomb ? 0 : Math.sin(dancePhase * 4) * 0.05;
 
     ctx.save();
-    ctx.translate(cx, cy - bounceY);
-    ctx.rotate(isBomb ? 0 : tilt);
+    ctx.translate(cx + wiggleX, cy - bounceY);
+    ctx.rotate(tilt + spin + beatShake);
     ctx.scale(stretch, 1 / stretch);
     ctx.scale(e.scale, e.scale);
 
